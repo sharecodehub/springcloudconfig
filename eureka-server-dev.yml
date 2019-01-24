@@ -8,12 +8,12 @@ eureka:
     instance-id: ${spring.cloud.client.ip_address}
     hostname: ${spring.cloud.client.ip_address}
     perferIpAddress: true
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-      #defaultZone: http://ms-eureka-client-8081:8081/eureka/,http://ms-eureka-client-8082:8082/eureka/
+  #client:
+  #  register-with-eureka: true
+  #  fetch-registry: true
+  #  service-url:
+  #    defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  #    defaultZone: http://ms-eureka-client-8081:8081/eureka/,http://ms-eureka-client-8082:8082/eureka/
   server:
     # 关闭自我保护机制
     enable-self-preservation: false
