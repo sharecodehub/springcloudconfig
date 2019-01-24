@@ -1,0 +1,26 @@
+server:
+  port: 8085
+eureka:
+  instance:
+    #hostname: localhost
+    #instance-id: ms-eureka-client-8083
+    #hostname: ms-eureka-client-8083 
+    instance-id: ${spring.cloud.client.ip_address}
+    hostname: ${spring.cloud.client.ip_address}
+    perferIpAddress: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      #defaultZone: http://ms-eureka-client-8081:8081/eureka/,http://ms-eureka-client-8082:8082/eureka/
+  server:
+    # 关闭自我保护机制
+    enable-self-preservation: false
+    # 每隔1s扫描服务列表，移除失效服务
+    eviction-interval-timer-in-ms: 1000
+
+logging:
+  level:
+    com.netflix.eureka: 'off'
+    com.netflix.discovery: 'off'

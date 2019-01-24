@@ -1,0 +1,58 @@
+server:
+  port: 9095
+
+mybatis:
+  config-location: classpath:mybatis.cfg.xml
+  type-aliases-package: cn.cpoc.fw.ms.entities
+  mapper-locations:
+    - classpath:cn/cpoc/fw/ms/user/provider/mybatis/mapper/**/*.xml
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource            # 当前数据源操作类型
+    driver-class-name: org.gjt.mm.mysql.Driver              # mysql驱动包
+    url: jdbc:mysql://localhost:3306/9093                   # 数据库名称
+    username: root
+    password: root
+    dbcp2:
+      min-idle: 5                                           # 数据库连接池的最小维持连接数
+      initial-size: 5                                       # 初始化连接数
+      max-total: 5                                          # 最大连接数
+      max-wait-millis: 200                                  # 等待连接获取的最大超时时间
+
+eureka:
+  client: #客户端注册进eureka服务列表内
+    service-url:
+      defaultZone: http://ms-eureka-client-8085:8085/eureka/
+      #defaultZone: http://ms-eureka-client-8081:8081/eureka/,http://ms-eureka-client-8082:8082/eureka/,http://ms-eureka-client-8083:8083/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ip_address}:${server.port}
+    prefer-ip-address: true     #访问路径可以显示IP地址
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+hystrix: 
+  command: 
+    default: 
+      execution: 
+       isolation: 
+        thread: 
+          timeoutInMilliseconds: 1000
+      circuitBreaker:
+       errorThresholdPercentage: 75  #设置启动熔断的错误或者延迟的比例
+  threadpool:
+    default:
+      coreSize: 10
+      
+hystrix.command.default.fallback.enabled: true
+hystrix.command.default.circuitBreaker.enabled: true
+hystrix.threadpool.default.maxQueueSize: 20
+hystrix.threadpool.default.queueSizeRejectionThreshold: 5
+
+info:
+  app.name:  ${spring.application.name}
+  company.name: cpoc

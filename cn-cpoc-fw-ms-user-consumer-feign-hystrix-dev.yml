@@ -1,0 +1,42 @@
+server:
+  port: 7075
+feign:
+  hystrix:
+    enabled: true
+eureka:
+  client:
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://ms-eureka-client-8085:8085/eureka/
+      # defaultZone: http://ms-eureka-client-8081:8081/eureka/,http://ms-eureka-client-8082:8082/eureka/,http://ms-eureka-client-8083:8083/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ip_address}:${server.port}
+    prefer-ip-address: true     #访问路径可以显示IP地址
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+hystrix: 
+  command: 
+    default: 
+      execution: 
+       isolation: 
+        thread: 
+          timeoutInMilliseconds: 1000
+      circuitBreaker:
+       errorThresholdPercentage: 75  #设置启动熔断的错误或者延迟的比例
+  threadpool:
+    default:
+      coreSize: 10
+      
+hystrix.command.default.fallback.enabled: true
+hystrix.command.default.circuitBreaker.enabled: true
+hystrix.threadpool.default.maxQueueSize: 20
+hystrix.threadpool.default.queueSizeRejectionThreshold: 5
+
+info:
+  app.name:  ${spring.application.name}
+  company.name: cpoc
